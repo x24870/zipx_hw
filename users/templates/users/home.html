@@ -3,7 +3,29 @@
 {% block content %}
 <h1>HOME</h1>
 
-<form action="{% url 'users:get_data' %}">
+<form method="POST" action="{% url 'users:get_data' %}">{% csrf_token %}
   <button type="submit">GET DATA</button>
+</form>
+
+<hr>
+<br>
+
+<form method="POST" action="{% url 'users:add_user' %}">{% csrf_token %}
+  <fieldset>
+  <legend>Add a User</legend>
+  <p>
+    <input type="text" name="username" placeholder="Jhon" required>
+    <label for="username">Username</label>
+  </p>
+  <p>
+    <input type="email" name="email" placeholder="jhon@gmail.com" required>
+    <label for="email">Email</label>
+  </p>
+  <p>
+    <input type="text" name="catchphrase" placeholder="Just do it" required>
+    <label for="catchphrase">Catchphrase</label>
+  </p>
+  <button type="submit">Submit</button>
+  </fieldset>
 </form>
 {% endblock %}

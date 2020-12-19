@@ -28,4 +28,12 @@
   <button type="submit">Submit</button>
   </fieldset>
 </form>
+
+<hr>
+<br>
+
+{% if show_print_user_btn %}
+<button><a href="{% url 'users:print_users' %}">Print Users</a></button>
+{% endif %}
+
 {% endblock %}

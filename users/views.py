@@ -1,13 +1,17 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
-# from django.conf import settings
-# from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 
 import requests
 
+User = get_user_model()
+
 def home(request):
-    return render(request, 'users/home.html', {})
+    show_print_user_btn = True if User.objects.all() else False
+    context = {
+        'show_print_user_btn': show_print_user_btn
+    }
+    return render(request, 'users/home.html', context=context)
 
 def get_data(request):
     if request.method == 'POST':
@@ -34,7 +38,6 @@ def add_user(request):
         email = request.POST['email']
         catchPhrase = request.POST['catchphrase']
         print(username, email, catchPhrase)
-        User = get_user_model()
         new_user = User.objects.create_user(
             username=username,
             email=email,
@@ -43,3 +46,10 @@ def add_user(request):
         )
 
     return redirect(reverse('users:home'))
+
+def print_users(request):
+    users = User.objects.all()
+    context = {
+        'users': users
+    }
+    return render(request, 'users/print_users.html', context=context)

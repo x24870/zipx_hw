@@ -2,4 +2,8 @@
 
 {% block content %}
 <h1>HOME</h1>
+
+<form action="{% url 'users:get_data' %}">
+  <button type="submit">GET DATA</button>
+</form>
 {% endblock %}

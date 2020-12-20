@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.contrib import messages
 from django.contrib.auth import get_user_model
 
 import requests
@@ -22,7 +23,7 @@ def get_data(request):
             email = data['email']
             catchPhrase = data['company']['catchPhrase']
             print(username, email, catchPhrase)
-            User = get_user_model()
+            if User.objects.filter(email=email).exists(): continue
             new_user = User.objects.create_user(
                 username=username,
                 email=email,
@@ -38,12 +39,16 @@ def add_user(request):
         email = request.POST['email']
         catchPhrase = request.POST['catchphrase']
         print(username, email, catchPhrase)
-        new_user = User.objects.create_user(
-            username=username,
-            email=email,
-            catchPhrase=catchPhrase,
-            password='',
-        )
+
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "This email has already registered!")
+        else:
+            new_user = User.objects.create_user(
+                username=username,
+                email=email,
+                catchPhrase=catchPhrase,
+                password='',
+            )
 
     return redirect(reverse('users:home'))
 
